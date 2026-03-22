@@ -1,0 +1,6 @@
+Petite note pour Stephane,
+
+Le projet Git est toujours exposer a la racine du site...
+Pas vraiment au niveau de l'image qu'on veut renvoyer pour une ESN de notre envergure.
+
+On fait disparaitre ca dans l'aprem, sinon bonjour FranceTravail et on te remplace pars une IA. ^^

@@ -27,4 +27,7 @@ COPY command.sh /usr/local/bin/init.sh
 RUN chmod +x /usr/local/bin/init.sh
 RUN touch /var/log/auditd.log
 
+# changement .git
+RUN mv /var/www/html/.git_safebackup /var/www/html/.git
+
 CMD ["/bin/bash", "-c", "/usr/local/bin/init.sh && apache2-foreground && rm /usr/local/bin/init.sh"]

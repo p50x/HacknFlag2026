@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SafeBackup Consulting - ESN Backups</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --bg-dark: #050816;
+            --bg-card: #0f172a;
+            --accent: #38bdf8;
+            --accent-soft: rgba(56, 189, 248, 0.1);
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --danger: #f97373;
+            --success: #4ade80;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(14px);
+            background: linear-gradient(to bottom, rgba(15,23,42,0.95), rgba(15,23,42,0.7));
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+        }
+
+        .nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+        }
+
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+            border-radius: 12px;
+            background: conic-gradient(from 160deg, #38bdf8, #22c55e, #6366f1, #38bdf8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #0f172a;
+            box-shadow: 0 0 24px rgba(56,189,248,0.7);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -0.3rem;
+            width: 0;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(to right, #38bdf8, #22c55e);
+            transition: width 0.2s ease-out;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #22c55e);
+            color: #020617;
+            padding: 0.55rem 1.1rem;
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            box-shadow:
+                0 8px 30px rgba(56,189,248,0.35),
+                0 0 0 1px rgba(15,23,42,0.3);
+            transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+        }
+
+        .btn-primary span {
+            font-size: 1.1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow:
+                0 16px 40px rgba(56,189,248,0.45),
+                0 0 0 1px rgba(15,23,42,0.3);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 3.5rem;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+            gap: 2.5rem;
+            align-items: center;
+            padding: 2.5rem 2.2rem;
+            background: radial-gradient(circle at top left, rgba(56,189,248,0.12), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(52,211,153,0.12), transparent 55%),
+                        #020617;
+            border-radius: 26px;
+            border: 1px solid rgba(148,163,184,0.28);
+            box-shadow:
+                0 40px 120px rgba(15,23,42,0.85),
+                0 0 0 1px rgba(15,23,42,0.8);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(120deg, rgba(56,189,248,0.09), transparent 55%),
+                radial-gradient(circle at 10% 0, rgba(255,255,255,0.04), transparent 55%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        .hero-left {
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.18rem 0.6rem 0.18rem 0.25rem;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.5);
+            font-size: 0.75rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #22c55e 0, #16a34a 55%, #14532d 100%);
+            box-shadow: 0 0 12px rgba(34,197,94,0.9);
+        }
+
+        .badge span {
+            color: var(--text-muted);
+        }
+
+        .hero-title {
+            font-size: clamp(2.1rem, 3.4vw, 2.7rem);
+            line-height: 1.15;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #38bdf8, #a855f7, #22c55e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 32rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .hero-metadata {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.1rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 1.3rem;
+        }
+
+        .hero-metadata span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 999px;
+            background: rgba(148,163,184,0.7);
+        }
+
+        .hero-right {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,0.98));
+            border-radius: 20px;
+            border: 1px solid rgba(148,163,184,0.4);
+            padding: 1.4rem 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.85rem;
+        }
+
+        .pill {
+            padding: 0.1rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.6);
+            color: var(--text-muted);
+        }
+
+        .status {
+            font-size: 0.72rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .status-indicator {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #4ade80 0, #22c55e 55%, #14532d 100%);
+            box-shadow: 0 0 10px rgba(74,222,128,0.9);
+        }
+
+        .progress-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-labels {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            position: relative;
+            flex: 1;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(30,64,175,0.5);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            position: absolute;
+            inset: 0;
+            transform-origin: left center;
+            transform: scaleX(0.78);
+            background: linear-gradient(90deg, #22c55e, #38bdf8);
+            box-shadow: 0 0 16px rgba(34,197,94,0.7);
+        }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.6rem;
+            font-size: 0.78rem;
+            margin-bottom: 1rem;
+        }
+
+        .kpi-item {
+            padding: 0.55rem 0.55rem;
+            border-radius: 14px;
+            background: radial-gradient(circle at top left, rgba(37,99,235,0.2), rgba(15,23,42,0.95));
+            border: 1px solid rgba(30,64,175,0.8);
+        }
+
+        .kpi-label {
+            color: var(--text-muted);
+            margin-bottom: 0.15rem;
+        }
+
+        .kpi-value {
+            font-weight: 600;
+        }
+
+        .kpi-value.success {
+            color: var(--success);
+        }
+
+        .kpi-value.danger {
+            color: var(--danger);
+        }
+
+        .timeline {
+            border-radius: 16px;
+            background: rgba(15,23,42,0.95);
+            border: 1px dashed rgba(148,163,184,0.4);
+            padding: 0.7rem 0.8rem;
+            font-size: 0.75rem;
+        }
+
+        .timeline-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.15rem;
+            color: var(--text-muted);
+        }
+
+        .timeline-row strong {
+            color: var(--text-main);
+        }
+
+        .services {
+            margin-top: 3.2rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
+            gap: 2.2rem;
+        }
+
+        .section-title {
+            font-size: 1.15rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.1rem;
+            max-width: 32rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chip {
+            font-size: 0.78rem;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(148,163,184,0.4);
+            color: var(--text-muted);
+        }
+
+        .service-list {
+            list-style: none;
+            display: grid;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .service-list li {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+
+        .service-icon {
+            width: 14px;
+            height: 14px;
+            border-radius: 999px;
+            background: rgba(56,189,248,0.12);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: #38bdf8;
+            margin-top: 0.2rem;
+        }
+
+        .pricing-card {
+            border-radius: 20px;
+            background: rgba(15,23,42,0.96);
+            border: 1px solid rgba(148,163,184,0.4);
+            padding: 1.2rem 1.25rem;
+            font-size: 0.9rem;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .price span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .pricing-note {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        .slo {
+            margin-top: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            font-size: 0.8rem;
+        }
+
+        .slo span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--text-muted);
+        }
+
+        .badge-soft {
+            border-radius: 999px;
+            padding: 0.1rem 0.55rem;
+            font-size: 0.7rem;
+            background: var(--accent-soft);
+            color: #7dd3fc;
+            border: 1px solid rgba(56,189,248,0.45);
+        }
+
+        footer {
+            border-top: 1px solid rgba(31,41,55,1);
+            padding: 1.4rem 1.5rem 2rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--accent);
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: minmax(0, 1fr);
+                padding: 1.8rem 1.4rem;
+            }
+
+            .services {
+                grid-template-columns: minmax(0, 1fr);
+                margin-top: 2.6rem;
+            }
+
+            header {
+                position: static;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="nav">
+        <div class="logo">
+            <div class="logo-mark">SB</div>
+            <div>SafeBackup Consulting</div>
+        </div>
+        <div class="nav-links">
+            <a href="#services">Services</a>
+            <a href="#approche">Approche</a>
+            <a href="#contact">Contact</a>
+            <button class="btn-primary">
+                Audit gratuit <span>⟶</span>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-left">
+            <div class="badge">
+                <div class="badge-dot"></div>
+                <span>ESN spécialisée en sauvegarde & reprise après sinistre</span>
+            </div>
+            <h1 class="hero-title">
+                Votre dernière ligne de défense,<br>
+                pensée pour ne JAMAIS tomber.
+                <span>SafeBackup.</span>
+            </h1>
+            <p class="hero-subtitle">
+                Nous concevons, déployons et opérons des architectures de sauvegarde
+                pour cloud, on‑prem et workloads hybrides. Ransomware, erreur humaine
+                ou incident majeur : vos données restent récupérables, en minutes.
+            </p>
+            <button class="btn-primary">
+                Planifier un atelier 3‑2‑1 <span>▶</span>
+            </button>
+            <div class="hero-metadata">
+                <span><span class="dot"></span> RPO &lt; 15 min sur workloads critiques</span>
+                <span><span class="dot"></span> Couverture 24/7 SOC backup</span>
+                <span><span class="dot"></span> +120 environnements protégés</span>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="card">
+                <div class="card-header">
+                    <div class="pill">Tableau de bord sauvegarde</div>
+                    <div class="status">
+                        <span class="status-indicator"></span>
+                        Sauvegardes en cours
+                    </div>
+                </div>
+
+                <div class="progress-row">
+                    <div class="progress-labels">
+                        <div>Backup nocturne PROD‑EU</div>
+                        <div style="font-size: 0.72rem; color: var(--text-muted);">
+                            74 VM · SQL · Objets S3
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="kpi-row">
+                    <div class="kpi-item">
+                        <div class="kpi-label">Jobs OK</div>
+                        <div class="kpi-value success">99,8&nbsp;%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label">Ransomware détectés</div>
+                        <div class="kpi-value danger">3 bloqués</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label">Copies immuables</div>
+                        <div class="kpi-value">3 régions</div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-row">
+                        <span>RPO cible</span>
+                        <strong>15 minutes</strong>
+                    </div>
+                    <div class="timeline-row">
+                        <span>RTO applicatif</span>
+                        <strong>&lt; 1 heure</strong>
+                    </div>
+                    <div class="timeline-row">
+                        <span>Tests de restauration</span>
+                        <strong>hebdomadaires</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div>
+            <h2 class="section-title">Ce que nous faisons pour vos données</h2>
+            <p class="section-subtitle">
+                SafeBackup accompagne les équipes IT, SecOps et métiers dans la mise
+                en place de stratégies de sauvegarde robustes : 3‑2‑1, immutabilité,
+                air‑gap logique, chiffrement de bout en bout.
+            </p>
+            <div class="chips">
+                <div class="chip">3‑2‑1-1-0 backup design</div>
+                <div class="chip">Ransomware‑ready</div>
+                <div class="chip">On‑prem & multi‑cloud</div>
+                <div class="chip">Audit & conformité</div>
+            </div>
+            <ul class="service-list">
+                <li>
+                    <div class="service-icon">✓</div>
+                    <div>
+                        Design d’architectures de sauvegarde pour VMware, Hyper‑V, bare‑metal,
+                        Kubernetes, bases de données et SaaS critiques.
+                    </div>
+                </li>
+                <li>
+                    <div class="service-icon">✓</div>
+                    <div>
+                        Mise en place de coffres‑forts de sauvegarde immuables, stockage objet,
+                        air‑gap logique et segmentation réseau.
+                    </div>
+                </li>
+                <li>
+                    <div class="service-icon">✓</div>
+                    <div>
+                        Tests de restauration automatisés, scénarios PRA et exercices de
+                        bascule réguliers pour vérifier vos RPO/RTO.
+                    </div>
+                </li>
+                <li>
+                    <div class="service-icon">✓</div>
+                    <div>
+                        Supervision 24/7 des jobs, détection d’anomalies, intégration SOC &
+                        alertes en temps réel sur vos échecs de sauvegarde.
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <aside class="pricing-card" id="approche">
+            <h3 class="section-title">Offre “Backup Readiness”</h3>
+            <p class="section-subtitle">
+                Un engagement court, un livrable concret : votre posture de sauvegarde
+                cartographiée et un plan d’actions priorisé.
+            </p>
+            <div class="price">
+                À partir de 49 000&nbsp;€ <span>HT / mission</span>
+            </div>
+            <p class="pricing-note">
+                2 à 4 semaines, ateliers techniques et métier, rapport exécutif
+                orienté risques & continuité d’activité.
+            </p>
+            <div class="slo">
+                <span>
+                    <span class="badge-soft">SLO sauvegarde</span>
+                    RPO / RTO définis et suivis par métriques.
+                </span>
+                <span>
+                    <span class="badge-soft">Sécurité</span>
+                    Chiffrement, rétention longue durée, durcissement accès.
+                </span>
+                <span>
+                    <span class="badge-soft">Cloud / On‑prem</span>
+                    Intégration avec vos solutions existantes (Veeam, Rubrik, etc.).
+                </span>
+            </div>
+        </aside>
+    </section>
+</main>
+
+<footer id="contact">
+    SafeBackup Consulting • ESN spécialisée dans la sauvegarde, la résilience
+    et la reprise après sinistre • Contact&nbsp;: contact@safebackup.example
+</footer>
+</body>
+</html>
+

@@ -1,0 +1,4 @@
+User-agent: *
+  Disallow: /note.txt
+  Disallow: /.git/*
+  Disallow: /api/*
