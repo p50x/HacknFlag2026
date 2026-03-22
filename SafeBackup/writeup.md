@@ -172,7 +172,7 @@ L’endpoint `/api/backup` prend un paramètre `mode` et l’envoie tel quel au 
 
 À première vue, les payloads d’injection de commandes classiques (ex : `;id`, `|id`,  `id` ) ne donnent rien de concluant.
 
-![image.png](SafeBackup%20Write-Up/image%203.png)
+![image.png](images/image%203.png)
 
 Le point subtil est dans `script.sh` :
 
