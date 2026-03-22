@@ -1,0 +1,33 @@
+FROM php:8.0-apache
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl git zip python3 python3-pip libapache2-mod-wsgi-py3 && \
+    rm -rf /var/lib/apt/lists/*
+
+# python 
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+RUN pip3 install flask 
+
+WORKDIR /var/www/html
+
+# copier
+COPY html/ /var/www/html/
+COPY app/ /var/www/app/
+COPY opt/ /opt/
+ENV FLAG=HNF{Y2hhb3N0ZXBoYW5l}
+
+# apache
+COPY apache2/apache2.conf /etc/apache2/sites-available/000-default.conf
+
+# wsgi
+RUN a2enmod wsgi && a2ensite 000-default
+
+# script init
+COPY command.sh /usr/local/bin/init.sh
+RUN chmod +x /usr/local/bin/init.sh
+RUN touch /var/log/auditd.log
+
+CMD ["/bin/bash", "-c", "/usr/local/bin/init.sh && apache2-foreground && rm /usr/local/bin/init.sh"]
